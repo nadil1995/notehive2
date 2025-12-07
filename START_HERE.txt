@@ -21,7 +21,7 @@
 2. Start all services:
    $ docker-compose up --build
 
-3. Wait for "Server running on port 5000" message
+3. Wait for "Server running on port 5001" message
 
 4. Open in your browser:
    🌐 http://localhost:3000
@@ -76,8 +76,8 @@ INFRASTRUCTURE:
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 Frontend UI ............ http://localhost:3000
-Backend API ........... http://localhost:5000/api
-Health Check .......... http://localhost:5000/api/health
+Backend API ........... http://localhost:5001/api
+Health Check .......... http://localhost:5001/api/health
 MongoDB ............... localhost:27017
 
 🔐 YOUR CREDENTIALS (Already Configured)

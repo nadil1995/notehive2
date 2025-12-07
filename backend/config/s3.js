@@ -1,37 +1,84 @@
 const AWS = require('aws-sdk');
 const multerS3 = require('multer-s3');
 const multer = require('multer');
+const path = require('path');
+const fs = require('fs');
 const { v4: uuidv4 } = require('uuid');
+const logger = require('./logger');
 
-const s3 = new AWS.S3({
-  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-  region: process.env.AWS_REGION
-});
+const uploadDir = path.join(__dirname, '../uploads');
 
-const upload = multer({
-  storage: multerS3({
-    s3: s3,
-    bucket: process.env.AWS_BUCKET_NAME,
-    acl: 'private',
-    key: function (req, file, cb) {
+// Create uploads directory if it doesn't exist
+if (!fs.existsSync(uploadDir)) {
+  fs.mkdirSync(uploadDir, { recursive: true });
+}
+
+let upload;
+const hasAwsCredentials = process.env.AWS_ACCESS_KEY_ID && process.env.AWS_SECRET_ACCESS_KEY;
+const hasAllS3Config = hasAwsCredentials && process.env.AWS_BUCKET_NAME && process.env.AWS_REGION;
+
+// Log S3 configuration status
+if (hasAllS3Config) {
+  logger.info('S3 configured - uploads will be stored in AWS S3', {
+    metadata: { bucket: process.env.AWS_BUCKET_NAME, region: process.env.AWS_REGION }
+  });
+} else {
+  logger.warn('S3 not fully configured - using local file storage as fallback', {
+    metadata: { hasCredentials: hasAwsCredentials, hasBucket: !!process.env.AWS_BUCKET_NAME }
+  });
+}
+
+// Check if AWS credentials are available
+if (hasAllS3Config) {
+  // Use S3 if credentials are available
+  const s3 = new AWS.S3({
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+    region: process.env.AWS_REGION
+  });
+
+  upload = multer({
+    storage: multerS3({
+      s3: s3,
+      bucket: process.env.AWS_BUCKET_NAME,
+      acl: 'private',
+      key: function (req, file, cb) {
+        const timestamp = Date.now();
+        const uniqueName = `${timestamp}-${uuidv4()}-${file.originalname}`;
+        cb(null, `uploads/${uniqueName}`);
+      }
+    }),
+    limits: {
+      fileSize: 10 * 1024 * 1024 // 10MB limit
+    },
+    fileFilter: (req, file, cb) => {
+      // Allow all file types for development
+      cb(null, true);
+    }
+  });
+} else {
+  // Use local disk storage as fallback
+  const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, uploadDir);
+    },
+    filename: function (req, file, cb) {
       const timestamp = Date.now();
       const uniqueName = `${timestamp}-${uuidv4()}-${file.originalname}`;
-      cb(null, `uploads/${uniqueName}`);
+      cb(null, uniqueName);
     }
-  }),
-  limits: {
-    fileSize: 10 * 1024 * 1024 // 10MB limit
-  },
-  fileFilter: (req, file, cb) => {
-    // Allow common file types
-    const allowedMimes = ['image/jpeg', 'image/png', 'application/pdf', 'text/plain', 'application/msword'];
-    if (allowedMimes.includes(file.mimetype)) {
-      cb(null, true);
-    } else {
-      cb(new Error('Invalid file type'));
-    }
-  }
-});
+  });
 
-module.exports = { s3, upload };
+  upload = multer({
+    storage: storage,
+    limits: {
+      fileSize: 10 * 1024 * 1024 // 10MB limit
+    },
+    fileFilter: (req, file, cb) => {
+      // Allow all file types for development
+      cb(null, true);
+    }
+  });
+}
+
+module.exports = { upload };

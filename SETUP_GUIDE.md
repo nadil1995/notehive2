@@ -67,12 +67,12 @@ cd /Users/nadilfernando/Documents/Devops/APP/notehive2-complete
 # Start everything
 docker-compose up --build
 
-# Wait for services to start (you'll see "Server running on port 5000")
+# Wait for services to start (you'll see "Server running on port 5001")
 # Then open: http://localhost:3000
 ```
 
 **What happens:**
-- Backend container starts on port 5000
+- Backend container starts on port 5001
 - Frontend container starts on port 3000
 - MongoDB container starts on port 27017
 - All containers connect on internal network
@@ -95,7 +95,7 @@ cat .env
 
 # Start backend
 npm run dev
-# Server runs on http://localhost:5000
+# Server runs on http://localhost:5001
 
 # In another terminal, start frontend
 cd ../frontend
@@ -130,8 +130,8 @@ Once running, access:
 | Service | URL | Purpose |
 |---------|-----|---------|
 | Frontend | http://localhost:3000 | Web app interface |
-| Backend API | http://localhost:5000/api | API endpoints |
-| Health Check | http://localhost:5000/api/health | API status |
+| Backend API | http://localhost:5001/api | API endpoints |
+| Health Check | http://localhost:5001/api/health | API status |
 | MongoDB | localhost:27017 | Database |
 
 ---
@@ -141,7 +141,7 @@ Once running, access:
 ### 1. Create a Note
 
 ```bash
-curl -X POST http://localhost:5000/api/notes \
+curl -X POST http://localhost:5001/api/notes \
   -H "Content-Type: application/json" \
   -d '{
     "title": "Test Note",
@@ -155,7 +155,7 @@ Expected response: Note object with `_id`
 ### 2. Get All Notes
 
 ```bash
-curl http://localhost:5000/api/notes/user123
+curl http://localhost:5001/api/notes/user123
 ```
 
 Expected response: Array of notes
@@ -163,7 +163,7 @@ Expected response: Array of notes
 ### 3. Check Server Health
 
 ```bash
-curl http://localhost:5000/api/health
+curl http://localhost:5001/api/health
 ```
 
 Expected response: `{"status":"OK",...}`
@@ -172,7 +172,7 @@ Expected response: `{"status":"OK",...}`
 
 ```bash
 # First create a note and get its ID
-curl -X POST http://localhost:5000/api/notes/:noteId/upload \
+curl -X POST http://localhost:5001/api/notes/:noteId/upload \
   -F "file=@/path/to/file.txt"
 ```
 
@@ -287,12 +287,12 @@ docker-compose logs db
 cat backend/.env | grep MONGODB_URI
 ```
 
-### Problem: "Port 3000/5000 already in use"
+### Problem: "Port 3000/5001 already in use"
 **Solution:**
 ```bash
 # Find process using port
 lsof -i :3000
-lsof -i :5000
+lsof -i :5001
 
 # Kill process
 kill -9 <PID>
@@ -311,7 +311,7 @@ kill -9 <PID>
 **Solution:**
 ```bash
 # Check if backend is running
-curl http://localhost:5000/api/health
+curl http://localhost:5001/api/health
 
 # Check backend logs
 docker-compose logs backend

@@ -117,7 +117,7 @@ Your complete, production-ready NoteHive application has been created with all t
 
 ### Docker Compose
 - **[docker-compose.yml](docker-compose.yml)** - Complete orchestration
-  - **backend** service (Node.js on port 5000)
+  - **backend** service (Node.js on port 5001)
   - **frontend** service (React on port 3000)
   - **db** service (MongoDB on port 27017)
   - **networks** - Internal bridge network
@@ -326,7 +326,7 @@ Configuration: ~500 lines
 
 2. **Open it**:
    - Frontend: http://localhost:3000
-   - Backend: http://localhost:5000/api
+   - Backend: http://localhost:5001/api
 
 3. **Test it**:
    - Create notes

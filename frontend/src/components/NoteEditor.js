@@ -9,6 +9,7 @@ function NoteEditor({ note, onSave, onCancel, onDelete, onFileUpload }) {
   const [tags, setTags] = useState(note?.tags?.join(', ') || '');
   const [isPinned, setIsPinned] = useState(note?.isPinned || false);
   const [isSaving, setIsSaving] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
 
   const handleSave = async (e) => {
     e.preventDefault();
@@ -27,10 +28,17 @@ function NoteEditor({ note, onSave, onCancel, onDelete, onFileUpload }) {
     }
   };
 
-  const handleFileUpload = (e) => {
+  const handleFileUpload = async (e) => {
     const file = e.target.files[0];
     if (file && onFileUpload) {
-      onFileUpload(file);
+      setIsUploading(true);
+      try {
+        await onFileUpload(file);
+      } finally {
+        setIsUploading(false);
+        // Reset the file input
+        e.target.value = '';
+      }
     }
   };
 
@@ -142,9 +150,10 @@ function NoteEditor({ note, onSave, onCancel, onDelete, onFileUpload }) {
                   type="file"
                   onChange={handleFileUpload}
                   id="file-input"
+                  disabled={isUploading}
                 />
                 <label htmlFor="file-input" className="upload-label">
-                  📎 Add attachment
+                  {isUploading ? '⏳ Uploading...' : '📎 Add attachment'}
                 </label>
               </div>
             )}

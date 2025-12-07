@@ -59,7 +59,7 @@ notehive2-complete/
          │ HTTP/CORS
          ▼
 ┌─────────────────────────┐
-│  Express Backend Server │ (Port 5000)
+│  Express Backend Server │ (Port 5001)
 │  - /api/notes           │
 │  - /api/health          │
 └────────┬────────────────┘
@@ -157,7 +157,7 @@ GET    /api/health                      # Server health status
 
 ### Backend (.env)
 ```
-PORT=5000
+PORT=5001
 NODE_ENV=development|production
 
 MONGODB_URI=mongodb://user:pass@host:27017/db?authSource=admin
@@ -173,7 +173,7 @@ LOG_LEVEL=info
 
 ### Frontend (.env, optional)
 ```
-REACT_APP_API_URL=http://localhost:5000/api
+REACT_APP_API_URL=http://localhost:5001/api
 ```
 
 ## 📋 Configuration Files

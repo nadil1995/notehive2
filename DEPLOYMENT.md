@@ -19,7 +19,7 @@ This guide walks through deploying the NoteHive application on an AWS EC2 instan
 4. Configure security group to allow:
    - Port 22 (SSH)
    - Port 3000 (Frontend)
-   - Port 5000 (Backend)
+   - Port 5001 (Backend)
    - Port 27017 (MongoDB - if exposing)
 
 ### 1.2 Update System
@@ -88,7 +88,7 @@ Edit `docker-compose.yml` to replace localhost with EC2 IP:
 ```yaml
 environment:
   - CORS_ORIGIN=http://your-ec2-public-ip:3000
-  - REACT_APP_API_URL=http://your-ec2-public-ip:5000/api
+  - REACT_APP_API_URL=http://your-ec2-public-ip:5001/api
 ```
 
 ### 3.4 Build and Start Services
@@ -118,7 +118,7 @@ docker ps
 docker-compose logs -f
 
 # Check backend health
-curl http://localhost:5000/api/health
+curl http://localhost:5001/api/health
 
 # Check frontend
 curl http://localhost:3000
@@ -127,8 +127,8 @@ curl http://localhost:3000
 ### 4.2 Access Application
 
 - Frontend: `http://your-ec2-public-ip:3000`
-- API: `http://your-ec2-public-ip:5000/api`
-- Health: `http://your-ec2-public-ip:5000/api/health`
+- API: `http://your-ec2-public-ip:5001/api`
+- Health: `http://your-ec2-public-ip:5001/api/health`
 
 ## Step 5: Production Setup (Recommended)
 
@@ -145,7 +145,7 @@ Add configuration:
 
 ```nginx
 upstream backend {
-    server localhost:5000;
+    server localhost:5001;
 }
 
 upstream frontend {
@@ -335,7 +335,7 @@ sudo systemctl status notehive
 ```bash
 # Find process using port
 sudo lsof -i :3000
-sudo lsof -i :5000
+sudo lsof -i :5001
 
 # Kill process
 sudo kill -9 <PID>
@@ -420,7 +420,7 @@ db.notes.createIndex({ createdAt: -1 })
 Remove public access to MongoDB:
 - Only allow SSH from your IP
 - Allow 80/443 from 0.0.0.0/0
-- Allow 3000/5000 only if needed
+- Allow 3000/5001 only if needed
 
 ### 2. Use IAM Roles Instead of Keys
 

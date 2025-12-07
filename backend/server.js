@@ -14,6 +14,9 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Serve uploaded files statically
+app.use('/uploads', express.static('uploads'));
+
 // Connect to MongoDB
 connectDB();
 
@@ -39,7 +42,7 @@ app.use((req, res) => {
   res.status(404).json({ error: 'Route not found' });
 });
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5001;
 
 app.listen(PORT, () => {
   logger.info(`Server started on port ${PORT}`, {

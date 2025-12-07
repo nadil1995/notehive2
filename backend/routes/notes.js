@@ -37,8 +37,8 @@ router.post('/', async (req, res) => {
   try {
     const { title, content, userId, category, tags, color } = req.body;
 
-    if (!title || !content || !userId) {
-      return res.status(400).json({ error: 'Title, content, and userId are required' });
+    if (!title || !userId) {
+      return res.status(400).json({ error: 'Title and userId are required' });
     }
 
     const note = new Note({
@@ -115,9 +115,12 @@ router.post('/:noteId/upload', upload.single('file'), async (req, res) => {
       return res.status(404).json({ error: 'Note not found' });
     }
 
+    // Handle both S3 and local file uploads
+    const fileUrl = req.file.location || `/uploads/${req.file.filename}`;
+
     note.attachments.push({
       filename: req.file.originalname,
-      url: req.file.location
+      url: fileUrl
     });
 
     await note.save();

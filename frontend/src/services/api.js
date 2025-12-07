@@ -1,12 +1,9 @@
 import axios from 'axios';
 
-const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
+const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5001/api';
 
 const api = axios.create({
-  baseURL: API_BASE_URL,
-  headers: {
-    'Content-Type': 'application/json'
-  }
+  baseURL: API_BASE_URL
 });
 
 // Notes API calls
@@ -19,11 +16,7 @@ export const notesAPI = {
   uploadFile: (noteId, file) => {
     const formData = new FormData();
     formData.append('file', file);
-    return api.post(`/notes/${noteId}/upload`, formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data'
-      }
-    });
+    return api.post(`/notes/${noteId}/upload`, formData);
   }
 };
 

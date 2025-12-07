@@ -8,7 +8,7 @@ const noteSchema = new mongoose.Schema({
   },
   content: {
     type: String,
-    required: true
+    default: ''
   },
   userId: {
     type: String,

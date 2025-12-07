@@ -33,7 +33,7 @@ npm install
 
 # Create .env file with your AWS credentials
 cat > .env << EOF
-PORT=5000
+PORT=5001
 NODE_ENV=development
 MONGODB_URI=mongodb://admin:admin123@54.221.26.107:27017/notesafe?authSource=admin
 AWS_ACCESS_KEY_ID=your_aws_access_key_id_here
@@ -45,7 +45,7 @@ EOF
 
 # Start backend
 npm run dev
-# Backend runs on http://localhost:5000
+# Backend runs on http://localhost:5001
 ```
 
 #### Frontend (in new terminal)
@@ -74,7 +74,7 @@ npm start
 
 ### Services
 - **Frontend**: React application on port 3000
-- **Backend**: Express API on port 5000
+- **Backend**: Express API on port 5001
 - **Database**: MongoDB on port 27017 (containerized)
 
 ## 🔧 Common Commands
@@ -117,15 +117,15 @@ cd frontend && npm run build
 | Service | URL |
 |---------|-----|
 | Frontend | http://localhost:3000 |
-| Backend API | http://localhost:5000/api |
-| Health Check | http://localhost:5000/api/health |
+| Backend API | http://localhost:5001/api |
+| Health Check | http://localhost:5001/api/health |
 | MongoDB | localhost:27017 |
 
 ## 📝 API Examples
 
 ### Create a Note
 ```bash
-curl -X POST http://localhost:5000/api/notes \
+curl -X POST http://localhost:5001/api/notes \
   -H "Content-Type: application/json" \
   -d '{
     "title": "My First Note",
@@ -138,12 +138,12 @@ curl -X POST http://localhost:5000/api/notes \
 
 ### Get All Notes
 ```bash
-curl http://localhost:5000/api/notes/user123
+curl http://localhost:5001/api/notes/user123
 ```
 
 ### Upload File to Note
 ```bash
-curl -X POST http://localhost:5000/api/notes/{noteId}/upload \
+curl -X POST http://localhost:5001/api/notes/{noteId}/upload \
   -F "file=@/path/to/file"
 ```
 

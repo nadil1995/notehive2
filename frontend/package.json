@@ -2,7 +2,7 @@
   "name": "notehive-frontend",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://backend:5000",
+  "proxy": "http://backend:5001",
   "dependencies": {
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

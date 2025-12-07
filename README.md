@@ -42,7 +42,7 @@ NoteHive
 Create a `.env` file in the backend directory:
 
 ```env
-PORT=5000
+PORT=5001
 NODE_ENV=development
 
 MONGODB_URI=mongodb://admin:admin123@54.221.26.107:27017/notesafe?authSource=admin
@@ -66,8 +66,8 @@ docker-compose up --build
 
 Access the application:
 - Frontend: http://localhost:3000
-- Backend API: http://localhost:5000/api
-- Health Check: http://localhost:5000/api/health
+- Backend API: http://localhost:5001/api
+- Health Check: http://localhost:5001/api/health
 
 ### Stop services:
 
@@ -92,7 +92,7 @@ npm install
 npm run dev
 ```
 
-Backend will run on http://localhost:5000
+Backend will run on http://localhost:5001
 
 ### Frontend Setup
 
@@ -147,7 +147,7 @@ Frontend will run on http://localhost:3000
 ### Prerequisites
 - AWS EC2 instance running Ubuntu 20.04+
 - Docker and Docker Compose installed
-- Security group configured for ports 3000, 5000, 27017
+- Security group configured for ports 3000, 5001, 27017
 
 ### Steps
 
@@ -175,7 +175,7 @@ docker-compose up -d --build
 
 5. **Access the application:**
 - Frontend: http://your-ec2-ip:3000
-- API: http://your-ec2-ip:5000/api
+- API: http://your-ec2-ip:5001/api
 
 ### Production Configuration
 
