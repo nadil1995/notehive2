@@ -22,6 +22,7 @@ connectDB();
 
 // Routes
 app.use('/api/health', require('./routes/health'));
+app.use('/api/auth', require('./routes/auth'));
 app.use('/api/notes', require('./routes/notes'));
 
 // Error handling middleware
