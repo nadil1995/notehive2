@@ -27,6 +27,7 @@ app.use('/api/repositories', require('./routes/repositories'));
 app.use('/api/timeline', require('./routes/timeline'));
 app.use('/api/storage', require('./routes/storage'));
 app.use('/api/uploads', require('./routes/uploads'));
+app.use('/api/admin', require('./routes/admin'));
 app.use('/api/notes', require('./routes/notes'));
 
 // Error handling middleware
